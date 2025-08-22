@@ -1,0 +1,58 @@
+services:
+  # 主应用服务
+  app:
+    build: .. # 使用原始Dockerfile构建
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/zhidao_jinggang
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DEBUG=true
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ..:/app
+      - ../logs:/app/logs
+      - ../uploads:/app/uploads
+    networks:
+      - app-network
+    # DevContainer会接管应用启动
+    command: sleep infinity
+
+  # PostgreSQL数据库
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: zhidao_jinggang
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "15432:5432" # 使用不同的外部端口避免冲突
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "16379:6379" # 使用不同的外部端口避免冲突
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,50 @@
+{
+  "name": "智导井冈后端开发环境",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "app", //VS Code 将连接到 Compose 文件中定义的 app 服务容器
+  "workspaceFolder": "/app", //VS Code 打开的项目根目录将被挂载到容器内的 /app 路径
+  "containerEnv": {
+    "ENVIRONMENT": "development", //标识当前为开发环境
+    "DATABASE_URL": "postgresql+asyncpg://postgres:password@db:5432/zhidao_jinggang", //数据库连接字符串
+    "REDIS_HOST": "redis", //Redis 主机地址
+    "REDIS_PORT": "6379", //Redis 端口
+    "DEBUG": "true", //启用调试模式
+    "ALLOWED_ORIGINS": "http://localhost:3000,http://localhost:8000,http://127.0.0.1:3000,http://127.0.0.1:8000", //跨域配置
+    "SECRET_KEY": "devcontainer-secret-key-for-development" //开发环境密钥
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python", //Python 语言支持
+        "ms-python.black-formatter", //Black 代码格式化器
+        "ms-python.isort", //isort 代码排序器
+        "charliermarsh.ruff", //Ruff 代码检查器
+        "ms-vscode.vscode-json", //JSON 语言支持
+        "redhat.vscode-yaml", //YAML 语言支持
+        "ms-azuretools.vscode-docker", //Docker 语言支持
+        "ms-python.vscode-pylance", //Pylance 语言支持
+        "ms-python.pylint"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python", //默认Python解释器路径
+        "python.linting.enabled": true, //启用Python代码检查
+        "python.formatting.provider": "black", //使用Black进行代码格式化
+        "python.testing.pytestEnabled": true, //启用Pytest测试框架
+        "editor.formatOnSave": true, //启用保存时自动格式化
+        "python.analysis.typeCheckingMode": "basic" //启用基本类型检查
+      }
+    }
+  },
+  "forwardPorts": [
+    8000
+  ], //将本地端口 8000 转发到容器内的 8000 端口
+  "portsAttributes": {
+    "8000": {
+      "label": "FastAPI应用", //端口标签
+      "onAutoForward": "notify" //自动通知
+    }
+  },
+  "postCreateCommand": "pip install -e .[dev]", //创建容器后执行的命令
+  "postStartCommand": "echo '🚀 开发环境已准备就绪！运行 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload 启动应用'", //启动容器后执行的命令
+  "remoteUser": "app" //远程用户
+}
