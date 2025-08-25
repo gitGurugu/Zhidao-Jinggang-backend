@@ -39,6 +39,7 @@ dependencies = [
     "aiocron>=1.8",
     "slowapi>=0.1.9",
     "python-json-logger>=2.0.7",
+    "openai>=1.6.0",
 ]
 
 [project.optional-dependencies]

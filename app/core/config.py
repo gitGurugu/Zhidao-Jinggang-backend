@@ -13,9 +13,9 @@ class Settings(BaseSettings):
     """应用配置设置"""
 
     # 基本信息
-    PROJECT_NAME: str = "知道井冈 - 企业级FastAPI后端服务"
+    PROJECT_NAME: str = "智导井冈 - FastAPI Backend Service"
     VERSION: str = "0.1.0"
-    DESCRIPTION: str = "基于FastAPI的现代化企业级后端服务"
+    DESCRIPTION: str = "基于FastAPI的后端服务"
 
     # 环境配置
     ENVIRONMENT: str = "development"
@@ -104,6 +104,18 @@ class Settings(BaseSettings):
     # 分页配置
     DEFAULT_PAGE_SIZE: int = 20
     MAX_PAGE_SIZE: int = 100
+
+    #OpenAI配置
+    OPENAI_API_KEY: str = ""
+    OPENAI_BASE_URL: str = ""
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_TEMPERATURE: float = 0.7
+    OPENAI_MAX_TOKENS: int = 4096
+    OPENAI_TOP_P: float = 1.0
+    OPENAI_FREQUENCY_PENALTY: float = 0.0
+
+
+
 
     @field_validator("ALLOWED_ORIGINS", mode="before")
     @classmethod

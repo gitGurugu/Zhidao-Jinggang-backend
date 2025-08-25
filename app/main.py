@@ -22,9 +22,8 @@ from app.api.v1.api import api_router
 from app.core.config import settings
 from app.core.exceptions import CustomHTTPException
 from app.core.logging import setup_logging
-from app.db.session import engine
 from app.db.base import Base
-
+from app.db.session import engine
 
 # 初始化速率限制器
 limiter = Limiter(key_func=get_remote_address)
@@ -182,7 +181,7 @@ def setup_system_routes(app: FastAPI) -> None:
     async def root():
         """根路径"""
         return {
-            "message": "知道井冈 - 企业级FastAPI后端服务",
+            "message": "智导井冈 - zhidaojinggang backend",
             "version": settings.VERSION,
             "docs_url": "/docs" if settings.ENVIRONMENT == "development" else None,
         }

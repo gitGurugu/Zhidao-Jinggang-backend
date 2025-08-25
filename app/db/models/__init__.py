@@ -4,5 +4,5 @@
 
 from .user import User
 from .item import Item
-
-__all__ = ["User", "Item"]
+from .chat import ChatMessage,ChatSession
+__all__ = ["User", "Item","ChatMessage","ChatSession"]
